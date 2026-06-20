@@ -34,7 +34,7 @@
             box-shadow: 10px 10px 0px 0px #000;
             overflow: hidden;
             width: 100%;
-            max-width: 450px;
+            /* max-width dihapus dari sini, diatur via Tailwind di HTML agar responsif */
             position: relative;
         }
 
@@ -72,7 +72,7 @@
         /* Teks Judul dengan Stroke Hitam */
         .title-text {
             color: #ffffff;
-            font-size: 2.2rem;
+            font-size: clamp(1.8rem, 5vw, 2.5rem); /* Ukuran font responsif */
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -105,7 +105,6 @@
             border-radius: 16px;
             padding: 20px;
             text-align: center;
-            margin: 20px;
             background: #fafafa;
         }
 
@@ -197,7 +196,7 @@
 </head>
 <body>
 
-    <div class="neu-container">
+    <div class="neu-container w-[95%] max-w-4xl mx-auto">
         <header class="neu-header">
             <div class="circle-pink"></div>
             <div class="circle-cyan"></div>
@@ -205,48 +204,65 @@
             <div class="neu-badge">🔥 MEDIA DOWNLOADER 🔥</div>
         </header>
 
-        <main class="p-5">
+        <main class="p-6 md:p-8 flex flex-col md:flex-row gap-8">
             
-            <div class="flex justify-center gap-4 mb-2">
-                <div onclick="setPlatform('yt')" id="tab-yt" class="platform-tab active p-2 text-3xl text-red-500"><i class="fa-brands fa-youtube"></i></div>
-                <div onclick="setPlatform('tt')" id="tab-tt" class="platform-tab p-2 text-3xl text-black"><i class="fa-brands fa-tiktok"></i></div>
-                <div onclick="setPlatform('ig')" id="tab-ig" class="platform-tab p-2 text-3xl text-pink-500"><i class="fa-brands fa-instagram"></i></div>
-            </div>
-
-            <div class="neu-dashed-box flex flex-col items-center justify-center gap-2">
-                <div class="w-12 h-12 bg-[#ff479a] rounded-full border-4 border-black flex justify-center items-center text-white text-xl shadow-[2px_2px_0_0_#000]">
-                    <i class="fa-solid fa-link"></i>
-                </div>
-                <h3 class="font-bold mt-2" id="box-title">SEARCH TITLE OR PASTE LINK</h3>
-                <p class="text-xs text-gray-500 font-bold" id="box-subtitle">MP3, MP4 • FAST DOWNLOAD</p>
-            </div>
-
-            <form id="downloadForm" class="space-y-4 px-5">
-                <div>
-                    <label class="flex items-center gap-2 font-bold text-sm mb-2">
-                        <i class="fa-solid fa-keyboard text-gray-500"></i> MEDIA INPUT
-                    </label>
-                    <input type="text" id="searchInput" class="neu-input" placeholder="Ketik judul lagu..." required>
+            <div class="w-full md:w-1/2 flex flex-col space-y-6">
+                <div class="flex justify-center gap-4">
+                    <div onclick="setPlatform('yt')" id="tab-yt" class="platform-tab active p-2 text-3xl text-red-500"><i class="fa-brands fa-youtube"></i></div>
+                    <div onclick="setPlatform('tt')" id="tab-tt" class="platform-tab p-2 text-3xl text-black"><i class="fa-brands fa-tiktok"></i></div>
+                    <div onclick="setPlatform('ig')" id="tab-ig" class="platform-tab p-2 text-3xl text-pink-500"><i class="fa-brands fa-instagram"></i></div>
                 </div>
 
-                <button type="submit" id="submitBtn" class="neu-btn-pink mt-4">
-                    ⚡ GENERATE LINK
-                </button>
-                <button type="button" onclick="resetUI()" class="neu-btn-white">
-                    ↻ RESET
-                </button>
-            </form>
-
-            <div id="loadingBox" class="hidden text-center mt-4 font-bold text-[#ff479a]">
-                <i class="fa-solid fa-spinner animate-spin text-2xl mb-2"></i>
-                <p>Mencari data...</p>
-            </div>
-
-            <div id="resultBox" class="hidden mt-6 border-t-4 border-black pt-4 px-5 pb-5">
-                <h4 class="font-bold mb-3">HASIL DITEMUKAN:</h4>
-                <div id="resultContent" class="space-y-3">
+                <div class="neu-dashed-box flex flex-col items-center justify-center gap-2">
+                    <div class="w-12 h-12 bg-[#ff479a] rounded-full border-4 border-black flex justify-center items-center text-white text-xl shadow-[2px_2px_0_0_#000]">
+                        <i class="fa-solid fa-link"></i>
                     </div>
+                    <h3 class="font-bold mt-2" id="box-title">SEARCH TITLE OR PASTE LINK</h3>
+                    <p class="text-xs text-gray-500 font-bold" id="box-subtitle">MP3, MP4 • FAST DOWNLOAD</p>
+                </div>
+
+                <form id="downloadForm" class="space-y-4">
+                    <div>
+                        <label class="flex items-center gap-2 font-bold text-sm mb-2">
+                            <i class="fa-solid fa-keyboard text-gray-500"></i> MEDIA INPUT
+                        </label>
+                        <input type="text" id="searchInput" class="neu-input" placeholder="Ketik judul lagu..." required>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="neu-btn-pink">
+                        ⚡ GENERATE LINK
+                    </button>
+                    <button type="button" onclick="resetUI()" class="neu-btn-white">
+                        ↻ RESET
+                    </button>
+                </form>
             </div>
+
+            <div class="w-full md:w-1/2 flex flex-col">
+                <div class="h-full border-4 border-black rounded-xl p-5 bg-[#fafafa] flex flex-col relative overflow-hidden">
+                    
+                    <h4 class="font-bold mb-4 border-b-2 border-black pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-inbox text-[#ff479a]"></i> HASIL GENERATE
+                    </h4>
+
+                    <div id="emptyState" class="flex-grow flex flex-col items-center justify-center text-center opacity-50">
+                        <i class="fa-solid fa-cloud-arrow-down text-6xl mb-3"></i>
+                        <p class="font-bold text-sm">Hasil tautan unduhan akan<br>muncul di area ini.</p>
+                    </div>
+
+                    <div id="loadingBox" class="hidden flex-grow flex flex-col items-center justify-center text-center font-bold text-[#42e8e0]">
+                        <i class="fa-solid fa-spinner animate-spin text-5xl mb-3 text-[#ff479a]"></i>
+                        <p class="text-black">Mencari data ke server...</p>
+                    </div>
+
+                    <div id="resultBox" class="hidden flex-grow flex flex-col space-y-4">
+                        <div id="resultContent" class="space-y-3">
+                            </div>
+                    </div>
+
+                </div>
+            </div>
+
         </main>
     </div>
 
@@ -285,6 +301,7 @@
             document.getElementById('searchInput').value = '';
             document.getElementById('resultBox').classList.add('hidden');
             document.getElementById('loadingBox').classList.add('hidden');
+            document.getElementById('emptyState').classList.remove('hidden');
             document.getElementById('submitBtn').disabled = false;
         }
 
@@ -292,25 +309,26 @@
             e.preventDefault();
             const query = document.getElementById('searchInput').value.trim();
             const btn = document.getElementById('submitBtn');
+            const emptyState = document.getElementById('emptyState');
             const loadingBox = document.getElementById('loadingBox');
             const resultBox = document.getElementById('resultBox');
             const resultContent = document.getElementById('resultContent');
 
             btn.disabled = true;
+            emptyState.classList.add('hidden');
             resultBox.classList.add('hidden');
             loadingBox.classList.remove('hidden');
             resultContent.innerHTML = '';
 
             try {
-                // LOGIKA ANTI-ERROR (Fallback ke layanan web pihak ketiga yang stabil)
-                // Karena API gratis sering "sibuk/mati", kita generate link yang pasti jalan.
+                // Simulasi delay kecil biar animasinya terasa smooth
+                await new Promise(r => setTimeout(r, 600));
 
                 if (currentPlatform === 'yt') {
                     const isUrl = query.includes('youtube.com') || query.includes('youtu.be');
                     if (isUrl) {
                         renderDirectLinks(query, 'yt');
                     } else {
-                        // Jika cari judul, langsung arahkan ke search web downloader
                         const searchUrl = `https://tomp3.cc/api/ajax/search?q=${encodeURIComponent(query)}`;
                         renderSearchLink(query, `https://m.youtube.com/results?search_query=${encodeURIComponent(query)}`);
                     }
@@ -328,7 +346,7 @@
                 }
 
             } catch (error) {
-                resultContent.innerHTML = `<p class="text-red-500 font-bold text-center">Gagal memproses. Coba refresh halaman.</p>`;
+                resultContent.innerHTML = `<p class="text-red-500 font-bold text-center border-2 border-red-500 p-3 rounded-lg">Gagal memproses. Coba lagi.</p>`;
             } finally {
                 loadingBox.classList.add('hidden');
                 resultBox.classList.remove('hidden');
@@ -343,11 +361,12 @@
 
             if (platform === 'yt') {
                 html = `
+                    <div class="bg-white p-3 rounded-xl border-2 border-black mb-2 font-bold text-xs text-center break-all">Tautan diproses...</div>
                     <a href="https://ssyoutube.com/en175/youtube-video-downloader?url=${encodeURIComponent(url)}" target="_blank" class="neu-btn-white flex justify-center items-center gap-2 !bg-[#42e8e0]">
-                        <i class="fa-solid fa-video"></i> DOWNLOAD MP4 (VIDEO)
+                        <i class="fa-solid fa-video"></i> DOWNLOAD MP4
                     </a>
                     <a href="https://tomp3.cc/youtube-downloader?url=${encodeURIComponent(url)}" target="_blank" class="neu-btn-white flex justify-center items-center gap-2 !bg-[#ffde33]">
-                        <i class="fa-solid fa-music"></i> DOWNLOAD MP3 (LAGU)
+                        <i class="fa-solid fa-music"></i> DOWNLOAD MP3
                     </a>
                 `;
             } else if (platform === 'tt') {
@@ -355,14 +374,18 @@
                     <a href="https://snaptik.app/ID?url=${encodeURIComponent(url)}" target="_blank" class="neu-btn-white flex justify-center items-center gap-2 !bg-[#42e8e0]">
                         <i class="fa-solid fa-mobile-screen"></i> MENUJU SERVER DOWNLOAD
                     </a>
-                    <p class="text-xs text-center font-bold text-gray-500">Sistem mengarahkan ke server Snaptik agar bebas error.</p>
+                    <div class="mt-3 bg-blue-50 border-2 border-blue-200 p-3 rounded-xl text-xs font-bold text-gray-600 text-center">
+                        Sistem mengarahkan ke server Snaptik agar bebas error dan tanpa watermark.
+                    </div>
                 `;
             } else if (platform === 'ig') {
                 html = `
                     <a href="https://snapinsta.app/id?url=${encodeURIComponent(url)}" target="_blank" class="neu-btn-white flex justify-center items-center gap-2 !bg-[#ff479a] !text-white">
                         <i class="fa-brands fa-instagram"></i> UNDUH MEDIA IG
                     </a>
-                    <p class="text-xs text-center font-bold text-gray-500">Sistem mengarahkan ke server SnapInsta untuk melewati sistem login IG.</p>
+                    <div class="mt-3 bg-pink-50 border-2 border-pink-200 p-3 rounded-xl text-xs font-bold text-gray-600 text-center">
+                        Sistem mengarahkan ke SnapInsta untuk melewati sistem login keamanan Instagram.
+                    </div>
                 `;
             }
             content.innerHTML = html;
@@ -372,323 +395,20 @@
         function renderSearchLink(query, ytSearchUrl) {
             const content = document.getElementById('resultContent');
             content.innerHTML = `
-                <div class="bg-gray-100 p-3 rounded-xl border-2 border-black mb-3">
-                    <p class="text-sm font-bold text-center">Judul Dicari: "${query}"</p>
+                <div class="bg-white p-3 rounded-xl border-2 border-black mb-3 text-center">
+                    <p class="text-xs text-gray-500 font-bold uppercase mb-1">Judul Dicari</p>
+                    <p class="text-sm font-bold">"${query}"</p>
                 </div>
                 <a href="${ytSearchUrl}" target="_blank" class="neu-btn-white flex justify-center items-center gap-2 !bg-[#ffde33]">
-                    <i class="fa-solid fa-magnifying-glass"></i> CARI DI YOUTUBE
+                    <i class="fa-brands fa-youtube"></i> CARI DI YOUTUBE
                 </a>
-                <p class="text-xs text-center font-bold text-gray-500 mt-2">Salin link video yang kamu temukan, lalu paste kembali ke aplikasi ini.</p>
+                <div class="mt-4 bg-yellow-50 border-2 border-yellow-200 p-3 rounded-xl text-xs font-bold text-gray-600 text-center flex flex-col gap-2">
+                    <span>1. Klik tombol di atas untuk mencari videonya.</span>
+                    <span>2. Salin URL/Tautan videonya.</span>
+                    <span>3. Tempel kembali ke aplikasi ini.</span>
+                </div>
             `;
         }
-    </script>
-</body>
-</html>
-            <i class="fa-brands fa-youtube"></i> YouTube
-        </button>
-        <button onclick="setPlatform('tt')" id="btn-tt" class="neu-btn bg-black text-white px-6 py-3 text-xl rounded-none flex items-center gap-2">
-            <i class="fa-brands fa-tiktok"></i> TikTok
-        </button>
-        <button onclick="setPlatform('ig')" id="btn-ig" class="neu-btn bg-pink-400 text-white px-6 py-3 text-xl rounded-none flex items-center gap-2 opacity-50 grayscale" title="Hanya support link URL">
-            <i class="fa-brands fa-instagram"></i> Instagram
-        </button>
-    </div>
-
-    <!-- Search Bar -->
-    <div class="w-full max-w-2xl relative mb-12 animate-enter" style="animation-delay: 0.2s;">
-        <form id="searchForm" class="flex flex-col sm:flex-row gap-4">
-            <input 
-                type="text" 
-                id="searchInput" 
-                class="neu-input w-full px-6 py-4 text-lg bg-white placeholder-gray-500 font-semibold rounded-none"
-                placeholder="Ketik judul lagu / video YouTube..."
-                required
-            >
-            <button type="submit" class="neu-btn bg-cyan-400 text-black px-8 py-4 text-xl rounded-none flex items-center justify-center gap-2 whitespace-nowrap">
-                <i class="fa-solid fa-magnifying-glass"></i> Cari
-            </button>
-        </form>
-        <div id="loading" class="hidden absolute -bottom-10 left-1/2 transform -translate-x-1/2 font-bold text-blue-600 bg-white neu-box px-4 py-1 text-sm">
-            <i class="fa-solid fa-spinner animate-spin"></i> Memburu data...
-        </div>
-    </div>
-
-    <!-- Results Container -->
-    <main id="results" class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Cards will be injected here -->
-    </main>
-
-    <script>
-        let currentPlatform = 'yt';
-        
-        // Konstanta API Gratis (Tanpa API Key, mendukung CORS)
-        const INVIDIOUS_API = 'https://vid.puffyan.us'; // Alternatif: https://invidious.nerdvpn.de
-        const TIKWM_API = 'https://www.tikwm.com/api';
-
-        // Fungsi mengubah platform
-        function setPlatform(platform) {
-            currentPlatform = platform;
-            
-            // Reset button styles
-            document.getElementById('btn-yt').className = 'neu-btn bg-white text-black px-6 py-3 text-xl rounded-none flex items-center gap-2';
-            document.getElementById('btn-tt').className = 'neu-btn bg-white text-black px-6 py-3 text-xl rounded-none flex items-center gap-2';
-            document.getElementById('btn-ig').className = 'neu-btn bg-white text-black px-6 py-3 text-xl rounded-none flex items-center gap-2 opacity-60';
-
-            // Set active button style & placeholder
-            const input = document.getElementById('searchInput');
-            if (platform === 'yt') {
-                document.getElementById('btn-yt').className = 'neu-btn bg-red-400 text-white px-6 py-3 text-xl rounded-none flex items-center gap-2 scale-105';
-                input.placeholder = "Ketik judul lagu / video YouTube...";
-            } else if (platform === 'tt') {
-                document.getElementById('btn-tt').className = 'neu-btn bg-black text-white px-6 py-3 text-xl rounded-none flex items-center gap-2 scale-105';
-                input.placeholder = "Ketik judul / hashtag TikTok atau Link...";
-            } else if (platform === 'ig') {
-                document.getElementById('btn-ig').className = 'neu-btn bg-pink-400 text-white px-6 py-3 text-xl rounded-none flex items-center gap-2 scale-105';
-                input.placeholder = "Paste LINK Instagram Reels/Post (IG tidak bisa cari judul)...";
-            }
-            
-            document.getElementById('results').innerHTML = ''; // Clear results
-        }
-
-        // Fungsi Form Submit
-        document.getElementById('searchForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const query = document.getElementById('searchInput').value.trim();
-            const resultsContainer = document.getElementById('results');
-            const loading = document.getElementById('loading');
-
-            resultsContainer.innerHTML = '';
-            loading.classList.remove('hidden');
-
-            try {
-                if (currentPlatform === 'yt') {
-                    await searchYouTube(query);
-                } else if (currentPlatform === 'tt') {
-                    await searchTikTok(query);
-                } else if (currentPlatform === 'ig') {
-                    alert("Untuk Instagram, pencarian menggunakan teks dikunci oleh Meta. Silakan masukkan LINK URL yang valid.");
-                    loading.classList.add('hidden');
-                }
-            } catch (error) {
-                resultsContainer.innerHTML = `<div class="col-span-full neu-box bg-red-300 p-6 text-center text-xl font-bold">Gagal mengambil data. Server API sedang sibuk, coba lagi nanti!</div>`;
-                console.error(error);
-            } finally {
-                loading.classList.add('hidden');
-            }
-        });
-
-        // 1. Fungsi Pencarian YouTube
-        async function searchYouTube(query) {
-            // Cek apakah input berupa URL atau teks
-            const isUrl = query.includes('youtube.com') || query.includes('youtu.be');
-            let apiUrl = isUrl 
-                ? `${INVIDIOUS_API}/api/v1/videos/${extractYTId(query)}`
-                : `${INVIDIOUS_API}/api/v1/search?q=${encodeURIComponent(query)}&type=video`;
-
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            
-            const items = isUrl ? [data] : data;
-
-            if (!items || items.length === 0) throw new Error("Tidak ada hasil");
-
-            items.slice(0, 9).forEach((video, index) => {
-                const videoId = video.videoId;
-                const title = video.title;
-                const thumb = video.videoThumbnails ? video.videoThumbnails[1]?.url : `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
-                const duration = formatTime(video.lengthSeconds || 0);
-
-                // Buat Elemen Card
-                const card = document.createElement('div');
-                card.className = "neu-box bg-white flex flex-col overflow-hidden animate-enter";
-                card.style.animationDelay = `${index * 0.1}s`;
-
-                card.innerHTML = `
-                    <div class="relative border-b-4 border-black">
-                        <img src="${thumb}" class="w-full h-48 object-cover" alt="Thumbnail">
-                        <span class="absolute bottom-2 right-2 bg-black text-white px-2 py-1 text-xs font-bold border-2 border-white">${duration}</span>
-                    </div>
-                    <div class="p-4 flex flex-col flex-grow">
-                        <h3 class="font-bold text-lg leading-tight mb-2 line-clamp-2">${title}</h3>
-                        <p class="text-sm text-gray-600 mb-4 font-semibold">${video.author || 'YouTube Audio'}</p>
-                        
-                        <div class="mt-auto flex flex-col gap-2">
-                            <!-- Download MP3 -->
-                            <a href="https://tomp3.cc/api/ajax/search?q=https://www.youtube.com/watch?v=${videoId}" target="_blank" class="neu-btn bg-lime-300 text-center py-2 text-sm">
-                                <i class="fa-solid fa-music"></i> Unduh MP3 (Lagu)
-                            </a>
-                            <!-- Download MP4 -->
-                            <a href="https://ssyoutube.com/en175/youtube-video-downloader?url=https://www.youtube.com/watch?v=${videoId}" target="_blank" class="neu-btn bg-cyan-300 text-center py-2 text-sm">
-                                <i class="fa-solid fa-video"></i> Unduh MP4 (Video)
-                            </a>
-                        </div>
-                    </div>
-                `;
-                document.getElementById('results').appendChild(card);
-            });
-        }
-
-        // 2. Fungsi Pencarian TikTok
-        async function searchTikTok(query) {
-            const isUrl = query.includes('tiktok.com');
-            let apiUrl = isUrl 
-                ? `${TIKWM_API}/?url=${encodeURIComponent(query)}` 
-                : `${TIKWM_API}/feed/search?keywords=${encodeURIComponent(query)}&count=9`;
-
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-
-            if (data.code !== 0) throw new Error("Gagal ambil data TikTok");
-
-            const items = isUrl ? [data.data] : data.data.videos;
-
-            items.forEach((video, index) => {
-                const card = document.createElement('div');
-                card.className = "neu-box bg-white flex flex-col overflow-hidden animate-enter";
-                card.style.animationDelay = `${index * 0.1}s`;
-
-                card.innerHTML = `
-                    <div class="relative border-b-4 border-black">
-                        <img src="${video.cover}" class="w-full h-48 object-cover" alt="Thumbnail">
-                        <div class="absolute top-2 left-2 bg-white px-2 py-1 text-xs font-bold border-2 border-black">
-                            <i class="fa-solid fa-play"></i> ${video.play_count || 0}
-                        </div>
-                    </div>
-                    <div class="p-4 flex flex-col flex-grow">
-                        <h3 class="font-bold text-sm leading-tight mb-4 line-clamp-3">${video.title || 'Video TikTok'}</h3>
-                        
-                        <div class="mt-auto flex flex-col gap-2">
-                            <a href="${video.play}" target="_blank" download class="neu-btn bg-blue-300 text-center py-2 text-sm">
-                                <i class="fa-solid fa-video"></i> Video (Tanpa Watermark)
-                            </a>
-                            <a href="${video.music || '#'}" target="_blank" download class="neu-btn bg-fuchsia-300 text-center py-2 text-sm">
-                                <i class="fa-solid fa-music"></i> Audio Sound
-                            </a>
-                        </div>
-                    </div>
-                `;
-                document.getElementById('results').appendChild(card);
-            });
-        }
-
-        // Helper: Extract YT ID
-        function extractYTId(url) {
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : null;
-        }
-
-        // Helper: Format Time
-        function formatTime(seconds) {
-            const h = Math.floor(seconds / 3600);
-            const m = Math.floor((seconds % 3600) / 60);
-            const s = Math.round(seconds % 60);
-            return [h, m > 9 ? m : h ? '0' + m : m || '0', s > 9 ? s : '0' + s].filter(Boolean).join(':');
-        }
-
-        // Initialize default platform UI
-        setPlatform('yt');
-    </script>
-</body>
-</html>
-                        <a id="dlVideo" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 py-3 px-4 rounded-xl text-sm font-medium transition-colors">
-                            <i class="fa-solid fa-video"></i> Unduh Video (MP4)
-                        </a>
-                        <a id="dlAudio" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 py-3 px-4 rounded-xl text-sm font-medium transition-colors border border-slate-700">
-                            <i class="fa-solid fa-music"></i> Unduh Audio (MP3)
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="mt-12 text-center">
-            <p class="text-xs text-slate-500 uppercase tracking-widest mb-4">Platform yang Didukung</p>
-            <div class="flex flex-wrap justify-center gap-6 text-2xl text-slate-600">
-                <i class="fa-brands fa-tiktok hover:text-slate-400 transition-colors"></i>
-                <i class="fa-brands fa-instagram hover:text-slate-400 transition-colors"></i>
-                <i class="fa-brands fa-youtube hover:text-slate-400 transition-colors"></i>
-                <i class="fa-brands fa-x-twitter hover:text-slate-400 transition-colors"></i>
-                <i class="fa-brands fa-facebook hover:text-slate-400 transition-colors"></i>
-            </div>
-        </div>
-    </main>
-
-    <footer class="border-t border-slate-800 bg-slate-900/30 py-6 text-center text-xs text-slate-500">
-        <p>&copy; 2026 SaveMedia. Dibuat dengan transparansi & tanpa iklan.</p>
-    </footer>
-
-    <script>
-        document.getElementById('downloadForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const urlInput = document.getElementById('mediaUrl').value;
-            const submitBtn = document.getElementById('submitBtn');
-            const loadingIcon = document.getElementById('loadingIcon');
-            const downloadIcon = document.getElementById('downloadIcon');
-            const btnText = document.getElementById('btnText');
-            const resultCard = document.getElementById('resultCard');
-
-            // Mengaktifkan Loading State
-            submitBtn.disabled = true;
-            loadingIcon.classList.remove('hidden');
-            downloadIcon.classList.add('hidden');
-            btnText.innerText = "Mengekstrak Media...";
-            resultCard.classList.add('hidden');
-
-            try {
-                // Menggunakan API publik gratis pihak ketiga (Cobalt API - terkenal bersih, cepat, tanpa iklan)
-                // Catatan: Jika endpoint publik di bawah ini sibuk, bisa diganti ke instance Cobalt lainnya.
-                const response = await fetch('https://api.cobalt.tools/api/json', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        url: urlInput,
-                        vQuality: "720", // Resolusi video default
-                        filenamePattern: "basic"
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.status === 'stream' || data.status === 'redirect') {
-                    // Berhasil mendapatkan link download
-                    document.getElementById('videoTitle').innerText = "Media berhasil diproses";
-                    document.getElementById('videoSource').innerText = "Deteksi otomatis berdasarkan link";
-                    
-                    // Set link download
-                    const dlVideoBtn = document.getElementById('dlVideo');
-                    dlVideoBtn.href = data.url;
-                    
-                    // Tampilkan thumbnail jika tersedia dari API (atau tampilkan ikon default)
-                    const thumbnailBox = document.getElementById('thumbnailBox');
-                    thumbnailBox.innerHTML = `<i class="fa-solid fa-film text-5xl text-blue-500"></i>`;
-
-                    // Tampilkan komponen hasil
-                    resultCard.classList.remove('hidden');
-                } else if (data.status === 'picker') {
-                    // Untuk link yang berisi banyak media (seperti slide foto Instagram/TikTok)
-                    document.getElementById('videoTitle').innerText = `Ditemukan ${data.picker.length} media. Mengunduh item pertama.`;
-                    document.getElementById('dlVideo').href = data.picker[0].url;
-                    resultCard.classList.remove('hidden');
-                } else {
-                    alert('Gagal memproses video. Pastikan tautan valid atau coba lagi nanti. ' + (data.text || ''));
-                }
-
-            } catch (error) {
-                console.error(error);
-                alert('Terjadi kesalahan jaringan atau server API sedang sibuk.');
-            } finally {
-                // Mengembalikan State Tombol
-                submitBtn.disabled = false;
-                loadingIcon.classList.add('hidden');
-                downloadIcon.classList.remove('hidden');
-                btnText.innerText = "Proses Tautan";
-            }
-        });
     </script>
 </body>
 </html>
