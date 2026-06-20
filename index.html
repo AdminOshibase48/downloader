@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibe Grabber - Downloader</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Fredoka -->
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -34,7 +37,6 @@
             box-shadow: 10px 10px 0px 0px #000;
             overflow: hidden;
             width: 100%;
-            /* max-width dihapus dari sini, diatur via Tailwind di HTML agar responsif */
             position: relative;
         }
 
@@ -72,8 +74,396 @@
         /* Teks Judul dengan Stroke Hitam */
         .title-text {
             color: #ffffff;
-            font-size: clamp(1.8rem, 5vw, 2.5rem); /* Ukuran font responsif */
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
             font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 
+                3px 3px 0 #000, 
+                -1px -1px 0 #000, 
+                1px -1px 0 #000, 
+                -1px 1px 0 #000, 
+                1px 1px 0 #000;
+            position: relative;
+            z-index: 10;
+        }
+
+        .neu-badge {
+            background: #ffffff;
+            border: 3px solid #000;
+            border-radius: 50px;
+            padding: 4px 16px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 10px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Area Input / Drop */
+        .neu-dashed-box {
+            border: 3px dashed #000;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            background: #fafafa;
+        }
+
+        .neu-input {
+            width: 100%;
+            border: 4px solid #000;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            font-family: inherit;
+            box-shadow: 4px 4px 0px 0px #000;
+            outline: none;
+            transition: all 0.1s;
+        }
+        .neu-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #000;
+        }
+
+        /* Tombol */
+        .neu-btn-pink {
+            background-color: #ff479a;
+            color: #ffffff;
+            border: 4px solid #000;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            width: 100%;
+            box-shadow: 4px 4px 0px 0px #000;
+            cursor: pointer;
+            transition: all 0.1s;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 0px #000;
+        }
+        .neu-btn-pink:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px 0px #000;
+        }
+
+        .neu-btn-white {
+            background-color: #ffffff;
+            color: #000;
+            border: 4px solid #000;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            width: 100%;
+            box-shadow: 4px 4px 0px 0px #000;
+            cursor: pointer;
+            transition: all 0.1s;
+            text-transform: uppercase;
+        }
+        .neu-btn-white:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px 0px #000;
+        }
+
+        /* Platform Tabs */
+        .platform-tab {
+            cursor: pointer;
+            border: 3px solid transparent;
+            opacity: 0.5;
+            transition: all 0.2s;
+        }
+        .platform-tab.active {
+            opacity: 1;
+            border: 3px solid #000;
+            background-color: #ffde33;
+            border-radius: 10px;
+            transform: scale(1.1);
+            box-shadow: 2px 2px 0px #000;
+        }
+
+        .footer-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #fff;
+            border: 3px solid #000;
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Container Utama -->
+    <div class="neu-container w-[95%] max-w-4xl mx-auto">
+        <!-- Bagian Kuning Atas -->
+        <header class="neu-header">
+            <div class="circle-pink"></div>
+            <div class="circle-cyan"></div>
+            <h1 class="title-text">VIBE GRABBER</h1>
+            <div class="neu-badge">🔥 DIRECT MEDIA ENGINE 🔥</div>
+        </header>
+
+        <!-- Konten Utama -->
+        <main class="p-6 md:p-8 flex flex-col md:flex-row gap-8">
+            
+            <!-- KOLOM KIRI: Input & Platform -->
+            <div class="w-full md:w-1/2 flex flex-col space-y-6">
+                <!-- Pilih Platform -->
+                <div class="flex justify-center gap-4">
+                    <div onclick="setPlatform('yt')" id="tab-yt" class="platform-tab active p-2 text-3xl text-red-500"><i class="fa-brands fa-youtube"></i></div>
+                    <div onclick="setPlatform('tt')" id="tab-tt" class="platform-tab p-2 text-3xl text-black"><i class="fa-brands fa-tiktok"></i></div>
+                    <div onclick="setPlatform('ig')" id="tab-ig" class="platform-tab p-2 text-3xl text-pink-500"><i class="fa-brands fa-instagram"></i></div>
+                </div>
+
+                <!-- Dashed Box -->
+                <div class="neu-dashed-box flex flex-col items-center justify-center gap-2">
+                    <div class="w-12 h-12 bg-[#ff479a] rounded-full border-4 border-black flex justify-center items-center text-white text-xl shadow-[2px_2px_0_0_#000]">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+                    <h3 class="font-bold mt-2" id="box-title">CARI JUDUL ATAU PASTE LINK</h3>
+                    <p class="text-xs text-gray-500 font-bold" id="box-subtitle">MP3, MP4 • DIRECT DOWNLOAD</p>
+                </div>
+
+                <!-- Form Input -->
+                <form id="downloadForm" class="space-y-4">
+                    <div>
+                        <label class="flex items-center gap-2 font-bold text-sm mb-2">
+                            <i class="fa-solid fa-keyboard text-gray-500"></i> MEDIA INPUT
+                        </label>
+                        <input type="text" id="searchInput" class="neu-input" placeholder="Ketik judul lagu / video YouTube..." required>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="neu-btn-pink">
+                        ⚡ EKSTRAK MEDIA
+                    </button>
+                    <button type="button" onclick="resetUI()" class="neu-btn-white">
+                        ↻ RESET
+                    </button>
+                </form>
+            </div>
+
+            <!-- KOLOM KANAN: Loading & Hasil Area -->
+            <div class="w-full md:w-1/2 flex flex-col">
+                <div class="h-full border-4 border-black rounded-xl p-5 bg-[#fafafa] flex flex-col relative overflow-hidden">
+                    
+                    <h4 class="font-bold mb-4 border-b-2 border-black pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-inbox text-[#ff479a]"></i> HASIL MEDIA
+                    </h4>
+
+                    <!-- Default State -->
+                    <div id="emptyState" class="flex-grow flex flex-col items-center justify-center text-center opacity-50">
+                        <i class="fa-solid fa-cloud-arrow-down text-6xl mb-3"></i>
+                        <p class="font-bold text-sm">Media siap unduh akan<br>muncul di area ini.</p>
+                    </div>
+
+                    <!-- Loading Indicator -->
+                    <div id="loadingBox" class="hidden flex-grow flex flex-col items-center justify-center text-center font-bold text-[#42e8e0]">
+                        <i class="fa-solid fa-spinner animate-spin text-5xl mb-3 text-[#ff479a]"></i>
+                        <p class="text-black">Menghubungkan ke API...</p>
+                    </div>
+
+                    <!-- Tempat Hasil Link -->
+                    <div id="resultBox" class="hidden flex-grow flex flex-col space-y-4">
+                        <div id="resultContent" class="space-y-3">
+                            <!-- Konten JS masuk ke sini -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Sesuai permintaan -->
+    <div class="footer-badge">© Made by ourstorytogether • 2026</div>
+
+    <script>
+        let currentPlatform = 'yt';
+
+        function setPlatform(platform) {
+            currentPlatform = platform;
+            
+            document.getElementById('tab-yt').classList.remove('active');
+            document.getElementById('tab-tt').classList.remove('active');
+            document.getElementById('tab-ig').classList.remove('active');
+            
+            document.getElementById(`tab-${platform}`).classList.add('active');
+
+            const input = document.getElementById('searchInput');
+            const boxTitle = document.getElementById('box-title');
+
+            if (platform === 'yt') {
+                input.placeholder = "Ketik judul lagu / video YouTube...";
+                boxTitle.innerText = "CARI JUDUL ATAU PASTE LINK";
+            } else if (platform === 'tt') {
+                input.placeholder = "Ketik keyword TikTok atau Paste Link...";
+                boxTitle.innerText = "CARI VIDEO ATAU PASTE LINK";
+            } else if (platform === 'ig') {
+                input.placeholder = "Paste LINK Instagram (Reels/Post)...";
+                boxTitle.innerText = "HANYA SUPPORT LINK URL";
+            }
+        }
+
+        function resetUI() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('resultBox').classList.add('hidden');
+            document.getElementById('loadingBox').classList.add('hidden');
+            document.getElementById('emptyState').classList.remove('hidden');
+            document.getElementById('submitBtn').disabled = false;
+        }
+
+        // Fungsi mengekstrak ID YouTube dari link URL
+        function extractYTId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        document.getElementById('downloadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const query = document.getElementById('searchInput').value.trim();
+            const btn = document.getElementById('submitBtn');
+            const emptyState = document.getElementById('emptyState');
+            const loadingBox = document.getElementById('loadingBox');
+            const resultBox = document.getElementById('resultBox');
+            const resultContent = document.getElementById('resultContent');
+
+            btn.disabled = true;
+            emptyState.classList.add('hidden');
+            resultBox.classList.add('hidden');
+            loadingBox.classList.remove('hidden');
+            resultContent.innerHTML = '';
+
+            try {
+                if (currentPlatform === 'yt') {
+                    await processYouTube(query, resultContent);
+                } 
+                else if (currentPlatform === 'tt') {
+                    await processTikTok(query, resultContent);
+                } 
+                else if (currentPlatform === 'ig') {
+                    if (!query.includes('instagram.com')) {
+                        throw new Error("Tautan Instagram tidak valid.");
+                    }
+                    await processInstagram(query, resultContent);
+                }
+            } catch (error) {
+                console.error(error);
+                resultContent.innerHTML = `
+                    <div class="bg-red-50 border-2 border-red-500 p-4 rounded-xl text-center">
+                        <i class="fa-solid fa-triangle-exclamation text-red-500 text-3xl mb-2"></i>
+                        <p class="text-red-600 font-bold text-sm">Gagal memproses media. Server API mungkin sedang sibuk atau link salah.</p>
+                    </div>`;
+            } finally {
+                loadingBox.classList.add('hidden');
+                resultBox.classList.remove('hidden');
+                btn.disabled = false;
+            }
+        });
+
+        // 1. API Gratis YouTube (Invidious)
+        async function processYouTube(query, container) {
+            let videoId = "";
+            let isUrl = query.includes('youtube.com') || query.includes('youtu.be');
+
+            // Jika yang diketik judul, lakukan pencarian dulu untuk mengambil ID teratas
+            if (!isUrl) {
+                const searchRes = await fetch(`https://vid.puffyan.us/api/v1/search?q=${encodeURIComponent(query)}&type=video`);
+                const searchData = await searchRes.json();
+                if (!searchData || searchData.length === 0) throw new Error("Video tidak ditemukan.");
+                videoId = searchData[0].videoId;
+            } else {
+                videoId = extractYTId(query);
+            }
+
+            // Ekstrak detail video dan link unduhan langsung
+            const vidRes = await fetch(`https://vid.puffyan.us/api/v1/videos/${videoId}`);
+            const vidData = await vidRes.json();
+
+            // Filter format MP4 (Video) dan M4A/WebM (Audio)
+            const videoFormat = vidData.formatStreams ? vidData.formatStreams.find(f => f.container === 'mp4') || vidData.formatStreams[0] : null;
+            const audioFormat = vidData.adaptiveFormats ? vidData.adaptiveFormats.find(f => f.type.includes('audio/mp4') || f.type.includes('audio/webm')) : null;
+
+            const videoUrl = videoFormat ? videoFormat.url : '';
+            const audioUrl = audioFormat ? audioFormat.url : '';
+            const thumbUrl = vidData.videoThumbnails[1] ? vidData.videoThumbnails[1].url : `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+
+            renderMediaCard(container, vidData.title, thumbUrl, videoUrl, audioUrl, "YOUTUBE");
+        }
+
+        // 2. API Gratis TikTok (TikWM)
+        async function processTikTok(query, container) {
+            let isUrl = query.includes('tiktok.com');
+            let apiUrl = isUrl 
+                ? `https://www.tikwm.com/api/?url=${encodeURIComponent(query)}`
+                : `https://www.tikwm.com/api/feed/search?keywords=${encodeURIComponent(query)}&count=1`;
+            
+            const res = await fetch(apiUrl);
+            const data = await res.json();
+            
+            if (data.code !== 0) throw new Error("Gagal mengambil data TikTok.");
+            
+            const item = isUrl ? data.data : data.data.videos[0];
+            const title = item.title || "Video TikTok";
+            
+            renderMediaCard(container, title, item.cover, item.play, item.music, "TIKTOK");
+        }
+
+        // 3. API Gratis Instagram (RyzenDesu API - Publik)
+        async function processInstagram(query, container) {
+            const res = await fetch(`https://api.ryzendesu.vip/api/downloader/igdl?url=${encodeURIComponent(query)}`);
+            const data = await res.json();
+            
+            if (!data.success || !data.data || data.data.length === 0) throw new Error("Gagal mengambil Instagram.");
+            
+            const mediaUrl = data.data[0].url;
+            const thumbUrl = data.data[0].thumbnail || "https://via.placeholder.com/400x300?text=Instagram+Media";
+
+            renderMediaCard(container, "Media Instagram", thumbUrl, mediaUrl, null, "INSTAGRAM");
+        }
+
+        // Fungsi Merender HTML Hasil (Direct Download)
+        function renderMediaCard(container, title, thumb, vidUrl, audUrl, source) {
+            let buttonsHtml = '';
+            
+            // Tombol Video
+            if (vidUrl) {
+                buttonsHtml += `
+                    <a href="${vidUrl}" target="_blank" download class="neu-btn-white flex justify-center items-center gap-2 !bg-[#42e8e0]">
+                        <i class="fa-solid fa-video"></i> DIRECT DOWNLOAD VIDEO
+                    </a>`;
+            }
+            // Tombol Audio
+            if (audUrl) {
+                buttonsHtml += `
+                    <a href="${audUrl}" target="_blank" download class="neu-btn-white flex justify-center items-center gap-2 !bg-[#ffde33]">
+                        <i class="fa-solid fa-music"></i> DIRECT DOWNLOAD AUDIO
+                    </a>`;
+            }
+
+            container.innerHTML = `
+                <div class="bg-white p-3 rounded-xl border-2 border-black mb-3">
+                    <span class="bg-black text-white text-[10px] font-bold px-2 py-1 rounded mb-2 inline-block">SUMBER: ${source}</span>
+                    <div class="w-full h-32 md:h-40 rounded-lg border-2 border-black mb-2 overflow-hidden bg-gray-100 flex items-center justify-center">
+                        <img src="${thumb}" class="w-full h-full object-cover" alt="Thumbnail">
+                    </div>
+                    <p class="text-sm font-bold line-clamp-2 leading-tight">${title}</p>
+                </div>
+                ${buttonsHtml}
+                <div class="mt-2 bg-[#fafafa] border-2 border-gray-300 p-2 rounded-xl text-[10px] font-bold text-gray-500 text-center uppercase tracking-wide">
+                    File diunduh langsung dari server API asli
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
             letter-spacing: 2px;
             text-transform: uppercase;
             text-shadow: 
