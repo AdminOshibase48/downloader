@@ -3,74 +3,387 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neubrutalism Downloader</title>
+    <title>Vibe Grabber - Downloader</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        body { font-family: 'Space Grotesk', sans-serif; background-color: #fdf8e3; }
-        
-        /* Neubrutalism UI Classes */
-        .neu-box {
-            border: 4px solid #000;
-            box-shadow: 6px 6px 0px 0px #000;
-            transition: all 0.2s ease-in-out;
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: #ffffff;
+            /* Latar Belakang Grid Kotak-kotak */
+            background-image: 
+                linear-gradient(#000 1.5px, transparent 1.5px),
+                linear-gradient(90deg, #000 1.5px, transparent 1.5px);
+            background-size: 40px 40px;
+            background-position: -1px -1px;
+            margin: 0;
+            padding: 20px 10px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .neu-btn {
+
+        /* Komponen Neubrutalism Sesuai Gambar */
+        .neu-container {
+            background: #ffffff;
             border: 4px solid #000;
-            box-shadow: 4px 4px 0px 0px #000;
-            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-radius: 24px;
+            box-shadow: 10px 10px 0px 0px #000;
+            overflow: hidden;
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+        }
+
+        .neu-header {
+            background-color: #ffde33; /* Kuning */
+            border-bottom: 4px solid #000;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Dekorasi Lingkaran di Header */
+        .circle-pink {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background-color: #ff479a;
+            border: 4px solid #000;
+            border-radius: 50%;
+            top: -20px;
+            left: -20px;
+        }
+        .circle-cyan {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: #42e8e0;
+            border: 4px solid #000;
+            border-radius: 50%;
+            bottom: -20px;
+            right: -10px;
+        }
+
+        /* Teks Judul dengan Stroke Hitam */
+        .title-text {
+            color: #ffffff;
+            font-size: 2.2rem;
             font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 
+                3px 3px 0 #000, 
+                -1px -1px 0 #000, 
+                1px -1px 0 #000, 
+                -1px 1px 0 #000, 
+                1px 1px 0 #000;
+            position: relative;
+            z-index: 10;
         }
-        .neu-btn:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0px 0px #000;
+
+        .neu-badge {
+            background: #ffffff;
+            border: 3px solid #000;
+            border-radius: 50px;
+            padding: 4px 16px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 10px;
+            position: relative;
+            z-index: 10;
         }
-        .neu-btn:active {
-            transform: translate(4px, 4px);
-            box-shadow: 0px 0px 0px 0px #000;
+
+        /* Area Input / Drop */
+        .neu-dashed-box {
+            border: 3px dashed #000;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px;
+            background: #fafafa;
         }
+
         .neu-input {
+            width: 100%;
             border: 4px solid #000;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            font-family: inherit;
             box-shadow: 4px 4px 0px 0px #000;
-            transition: all 0.2s ease-in-out;
+            outline: none;
+            transition: all 0.1s;
         }
         .neu-input:focus {
-            outline: none;
             transform: translate(2px, 2px);
             box-shadow: 2px 2px 0px 0px #000;
         }
 
-        /* Smooth Entry Animations */
-        .animate-enter {
-            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        /* Tombol */
+        .neu-btn-pink {
+            background-color: #ff479a;
+            color: #ffffff;
+            border: 4px solid #000;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            width: 100%;
+            box-shadow: 4px 4px 0px 0px #000;
+            cursor: pointer;
+            transition: all 0.1s;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 0px #000;
         }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .neu-btn-pink:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px 0px #000;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #fdf8e3; border-left: 3px solid #000; }
-        ::-webkit-scrollbar-thumb { background: #ff6b6b; border: 3px solid #000; }
+        .neu-btn-white {
+            background-color: #ffffff;
+            color: #000;
+            border: 4px solid #000;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            width: 100%;
+            box-shadow: 4px 4px 0px 0px #000;
+            cursor: pointer;
+            transition: all 0.1s;
+            text-transform: uppercase;
+        }
+        .neu-btn-white:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px 0px #000;
+        }
+
+        /* Platform Tabs */
+        .platform-tab {
+            cursor: pointer;
+            border: 3px solid transparent;
+            opacity: 0.5;
+            transition: all 0.2s;
+        }
+        .platform-tab.active {
+            opacity: 1;
+            border: 3px solid #000;
+            background-color: #ffde33;
+            border-radius: 10px;
+            transform: scale(1.1);
+            box-shadow: 2px 2px 0px #000;
+        }
+
+        .footer-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #fff;
+            border: 3px solid #000;
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            z-index: 100;
+        }
     </style>
 </head>
-<body class="min-h-screen text-black flex flex-col items-center py-10 px-4">
+<body>
 
-    <!-- Header -->
-    <header class="w-full max-w-4xl text-center mb-10 animate-enter">
-        <h1 class="text-5xl md:text-6xl font-bold mb-4 uppercase tracking-tighter bg-yellow-300 inline-block px-4 py-2 border-4 border-black shadow-[6px_6px_0_0_#000] rotate-1">
-            Vibe<span class="text-white bg-black px-2 mx-1">Grabber</span>
-        </h1>
-        <p class="text-lg font-semibold mt-4 bg-white inline-block px-4 py-1 neu-box -rotate-1">
-            Cari Judul Lagu/Video atau Paste Link. Gratis!
-        </p>
-    </header>
+    <div class="neu-container">
+        <header class="neu-header">
+            <div class="circle-pink"></div>
+            <div class="circle-cyan"></div>
+            <h1 class="title-text">VIBE GRABBER</h1>
+            <div class="neu-badge">🔥 MEDIA DOWNLOADER 🔥</div>
+        </header>
 
-    <!-- Platform Selector -->
-    <div class="flex flex-wrap justify-center gap-4 mb-8 w-full max-w-2xl animate-enter" style="animation-delay: 0.1s;">
-        <button onclick="setPlatform('yt')" id="btn-yt" class="neu-btn bg-red-400 text-white px-6 py-3 text-xl rounded-none flex items-center gap-2">
+        <main class="p-5">
+            
+            <div class="flex justify-center gap-4 mb-2">
+                <div onclick="setPlatform('yt')" id="tab-yt" class="platform-tab active p-2 text-3xl text-red-500"><i class="fa-brands fa-youtube"></i></div>
+                <div onclick="setPlatform('tt')" id="tab-tt" class="platform-tab p-2 text-3xl text-black"><i class="fa-brands fa-tiktok"></i></div>
+                <div onclick="setPlatform('ig')" id="tab-ig" class="platform-tab p-2 text-3xl text-pink-500"><i class="fa-brands fa-instagram"></i></div>
+            </div>
+
+            <div class="neu-dashed-box flex flex-col items-center justify-center gap-2">
+                <div class="w-12 h-12 bg-[#ff479a] rounded-full border-4 border-black flex justify-center items-center text-white text-xl shadow-[2px_2px_0_0_#000]">
+                    <i class="fa-solid fa-link"></i>
+                </div>
+                <h3 class="font-bold mt-2" id="box-title">SEARCH TITLE OR PASTE LINK</h3>
+                <p class="text-xs text-gray-500 font-bold" id="box-subtitle">MP3, MP4 • FAST DOWNLOAD</p>
+            </div>
+
+            <form id="downloadForm" class="space-y-4 px-5">
+                <div>
+                    <label class="flex items-center gap-2 font-bold text-sm mb-2">
+                        <i class="fa-solid fa-keyboard text-gray-500"></i> MEDIA INPUT
+                    </label>
+                    <input type="text" id="searchInput" class="neu-input" placeholder="Ketik judul lagu..." required>
+                </div>
+
+                <button type="submit" id="submitBtn" class="neu-btn-pink mt-4">
+                    ⚡ GENERATE LINK
+                </button>
+                <button type="button" onclick="resetUI()" class="neu-btn-white">
+                    ↻ RESET
+                </button>
+            </form>
+
+            <div id="loadingBox" class="hidden text-center mt-4 font-bold text-[#ff479a]">
+                <i class="fa-solid fa-spinner animate-spin text-2xl mb-2"></i>
+                <p>Mencari data...</p>
+            </div>
+
+            <div id="resultBox" class="hidden mt-6 border-t-4 border-black pt-4 px-5 pb-5">
+                <h4 class="font-bold mb-3">HASIL DITEMUKAN:</h4>
+                <div id="resultContent" class="space-y-3">
+                    </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="footer-badge">© Made for You • 2026</div>
+
+    <script>
+        let currentPlatform = 'yt';
+
+        function setPlatform(platform) {
+            currentPlatform = platform;
+            
+            // Reset Tabs
+            document.getElementById('tab-yt').classList.remove('active');
+            document.getElementById('tab-tt').classList.remove('active');
+            document.getElementById('tab-ig').classList.remove('active');
+            
+            // Set Active
+            document.getElementById(`tab-${platform}`).classList.add('active');
+
+            const input = document.getElementById('searchInput');
+            const boxTitle = document.getElementById('box-title');
+
+            if (platform === 'yt') {
+                input.placeholder = "Ketik judul lagu / video YouTube...";
+                boxTitle.innerText = "CARI JUDUL ATAU PASTE LINK";
+            } else if (platform === 'tt') {
+                input.placeholder = "Ketik keyword TikTok atau Link...";
+                boxTitle.innerText = "CARI VIDEO ATAU PASTE LINK";
+            } else if (platform === 'ig') {
+                input.placeholder = "Paste LINK Instagram (Reels/Post)...";
+                boxTitle.innerText = "HANYA SUPPORT LINK URL";
+            }
+        }
+
+        function resetUI() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('resultBox').classList.add('hidden');
+            document.getElementById('loadingBox').classList.add('hidden');
+            document.getElementById('submitBtn').disabled = false;
+        }
+
+        document.getElementById('downloadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const query = document.getElementById('searchInput').value.trim();
+            const btn = document.getElementById('submitBtn');
+            const loadingBox = document.getElementById('loadingBox');
+            const resultBox = document.getElementById('resultBox');
+            const resultContent = document.getElementById('resultContent');
+
+            btn.disabled = true;
+            resultBox.classList.add('hidden');
+            loadingBox.classList.remove('hidden');
+            resultContent.innerHTML = '';
+
+            try {
+                // LOGIKA ANTI-ERROR (Fallback ke layanan web pihak ketiga yang stabil)
+                // Karena API gratis sering "sibuk/mati", kita generate link yang pasti jalan.
+
+                if (currentPlatform === 'yt') {
+                    const isUrl = query.includes('youtube.com') || query.includes('youtu.be');
+                    if (isUrl) {
+                        renderDirectLinks(query, 'yt');
+                    } else {
+                        // Jika cari judul, langsung arahkan ke search web downloader
+                        const searchUrl = `https://tomp3.cc/api/ajax/search?q=${encodeURIComponent(query)}`;
+                        renderSearchLink(query, `https://m.youtube.com/results?search_query=${encodeURIComponent(query)}`);
+                    }
+                } 
+                else if (currentPlatform === 'tt') {
+                    renderDirectLinks(query, 'tt');
+                } 
+                else if (currentPlatform === 'ig') {
+                    if (!query.includes('instagram.com')) {
+                        alert("Harap masukkan LINK Instagram yang valid!");
+                        resetUI();
+                        return;
+                    }
+                    renderDirectLinks(query, 'ig');
+                }
+
+            } catch (error) {
+                resultContent.innerHTML = `<p class="text-red-500 font-bold text-center">Gagal memproses. Coba refresh halaman.</p>`;
+            } finally {
+                loadingBox.classList.add('hidden');
+                resultBox.classList.remove('hidden');
+                btn.disabled = false;
+            }
+        });
+
+        // Fungsi Render Jika Input adalah URL
+        function renderDirectLinks(url, platform) {
+            const content = document.getElementById('resultContent');
+            let html = '';
+
+            if (platform === 'yt') {
+                html = `
+                    <a href="https://ssyoutube.com/en175/youtube-video-downloader?url=${encodeURIComponent(url)}" target="_blank" class="neu-btn-white flex justify-center items-center gap-2 !bg-[#42e8e0]">
+                        <i class="fa-solid fa-video"></i> DOWNLOAD MP4 (VIDEO)
+                    </a>
+                    <a href="https://tomp3.cc/youtube-downloader?url=${encodeURIComponent(url)}" target="_blank" class="neu-btn-white flex justify-center items-center gap-2 !bg-[#ffde33]">
+                        <i class="fa-solid fa-music"></i> DOWNLOAD MP3 (LAGU)
+                    </a>
+                `;
+            } else if (platform === 'tt') {
+                html = `
+                    <a href="https://snaptik.app/ID?url=${encodeURIComponent(url)}" target="_blank" class="neu-btn-white flex justify-center items-center gap-2 !bg-[#42e8e0]">
+                        <i class="fa-solid fa-mobile-screen"></i> MENUJU SERVER DOWNLOAD
+                    </a>
+                    <p class="text-xs text-center font-bold text-gray-500">Sistem mengarahkan ke server Snaptik agar bebas error.</p>
+                `;
+            } else if (platform === 'ig') {
+                html = `
+                    <a href="https://snapinsta.app/id?url=${encodeURIComponent(url)}" target="_blank" class="neu-btn-white flex justify-center items-center gap-2 !bg-[#ff479a] !text-white">
+                        <i class="fa-brands fa-instagram"></i> UNDUH MEDIA IG
+                    </a>
+                    <p class="text-xs text-center font-bold text-gray-500">Sistem mengarahkan ke server SnapInsta untuk melewati sistem login IG.</p>
+                `;
+            }
+            content.innerHTML = html;
+        }
+
+        // Fungsi Render Jika Input adalah Pencarian Teks (Judul)
+        function renderSearchLink(query, ytSearchUrl) {
+            const content = document.getElementById('resultContent');
+            content.innerHTML = `
+                <div class="bg-gray-100 p-3 rounded-xl border-2 border-black mb-3">
+                    <p class="text-sm font-bold text-center">Judul Dicari: "${query}"</p>
+                </div>
+                <a href="${ytSearchUrl}" target="_blank" class="neu-btn-white flex justify-center items-center gap-2 !bg-[#ffde33]">
+                    <i class="fa-solid fa-magnifying-glass"></i> CARI DI YOUTUBE
+                </a>
+                <p class="text-xs text-center font-bold text-gray-500 mt-2">Salin link video yang kamu temukan, lalu paste kembali ke aplikasi ini.</p>
+            `;
+        }
+    </script>
+</body>
+</html>
             <i class="fa-brands fa-youtube"></i> YouTube
         </button>
         <button onclick="setPlatform('tt')" id="btn-tt" class="neu-btn bg-black text-white px-6 py-3 text-xl rounded-none flex items-center gap-2">
